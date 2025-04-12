@@ -1,5 +1,5 @@
 # Build stage
-FROM eclipse-temurin:17-jdk-jammy AS build
+FROM docker.io/eclipse-temurin:21-jdk-jammy AS build
 ENV HOME=/usr/app/eureka-server
 RUN mkdir -p $HOME
 WORKDIR $HOME
@@ -15,7 +15,7 @@ COPY src $HOME/src
 RUN ./gradlew clean build -x test --no-daemon
 
 # Package stage
-FROM eclipse-temurin:17-jre-jammy
+FROM docker.io/eclipse-temurin:21-jre-jammy
 COPY --from=build /usr/app/eureka-server/build/libs/*.jar /app/eureka-server.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app/eureka-server.jar"]
